@@ -80,6 +80,49 @@ Blockly.Extensions.registerMixin = function(name, mixinObj) {
  *     flyout of the mutator dialog.
  * @throws {Error} if the mutation is invalid or can't be applied to the block.
  */
+Blockly.Extensions.registerInspector = function(name, mixinObj, opt_helperFn, opt_blockList) {
+  var errorPrefix = 'Error when registering inspector "' + name + '": ';
+
+  // Sanity check the mixin object before registering it.
+  Blockly.Extensions.checkHasFunction_(errorPrefix, mixinObj.domToMutation, 'domToMutation');
+  Blockly.Extensions.checkHasFunction_(errorPrefix, mixinObj.mutationToDom, 'mutationToDom');
+
+  var hasMutatorDialog = Blockly.Extensions.checkMutatorDialog_(mixinObj, errorPrefix);
+
+  if (opt_helperFn && (typeof opt_helperFn != 'function')) {
+    throw Error('Extension "' + name + '" is not a function');
+  }
+
+  // Sanity checks passed.
+  Blockly.Extensions.register(name, function() {
+    if (hasMutatorDialog) {
+      if (!Blockly.Mutator) {
+        throw Error(errorPrefix + 'Missing require for Blockly.Mutator');
+      }
+      this.setMutator(new Blockly.Mutator(opt_blockList || []));
+    }
+    // Mixin the object.
+    this.mixin(mixinObj);
+
+    if (opt_helperFn) {
+      opt_helperFn.apply(this);
+    }
+  });
+};
+
+/**
+ * Registers a new extension function that adds a mutator to the block.
+ * At register time this performs some basic sanity checks on the mutator.
+ * The wrapper may also add a mutator dialog to the block, if both compose and
+ * decompose are defined on the mixin.
+ * @param {string} name The name of this mutator extension.
+ * @param {!Object} mixinObj The values to mix in.
+ * @param {(function())=} opt_helperFn An optional function to apply after
+ *     mixing in the object.
+ * @param {!Array.<string>=} opt_blockList A list of blocks to appear in the
+ *     flyout of the mutator dialog.
+ * @throws {Error} if the mutation is invalid or can't be applied to the block.
+ */
 Blockly.Extensions.registerMutator = function(name, mixinObj, opt_helperFn,
     opt_blockList) {
   var errorPrefix = 'Error when registering mutator "' + name + '": ';
@@ -170,8 +213,7 @@ Blockly.Extensions.apply = function(name, block, isMutator) {
  * @throws {Error} if the property does not exist or is not a function.
  * @private
  */
-Blockly.Extensions.checkHasFunction_ = function(errorPrefix, func,
-    propertyName) {
+Blockly.Extensions.checkHasFunction_ = function(errorPrefix, func, propertyName) {
   if (!func) {
     throw Error(errorPrefix +
         'missing required property "' + propertyName + '"');
