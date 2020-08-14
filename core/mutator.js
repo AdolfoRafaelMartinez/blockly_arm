@@ -192,19 +192,24 @@ Blockly.Mutator.prototype.createEditor_ = function() {
   }
 
   const svg1 = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svg1.setAttribute("viewBox", "0 0 100 100");
-  const rect1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-  rect1.setAttribute("x", "0");
-  rect1.setAttribute("y", "0");
-  rect1.setAttribute("width", "100%");
-  rect1.setAttribute("height", "100%");
-  svg1.appendChild(rect1);
-  const cir1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-  cir1.setAttribute("cx", "50%");
-  cir1.setAttribute("cy", "50%");
-  cir1.setAttribute("r", "4");
-  cir1.setAttribute("fill", "red");
-  svg1.appendChild(cir1);
+  svg1.setAttribute("viewBox", "0 0 400 400");
+  const poly1 = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+  poly1.setAttribute("points", "5,5 195,10 185,185 10,195");
+  poly1.setAttribute("style", "fill:lime;stroke:purple;stroke-width:1");
+  const circle1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  circle1.setAttribute("cx", "50");
+  circle1.setAttribute("cy", "50");
+  const foreign1 = document.createElementNS("http://www.w3.org/2000/svg", "foreignObject");
+  foreign1.setAttribute("x", "20");
+  foreign1.setAttribute("y", "20");
+  foreign1.setAttribute("width", "160");
+  foreign1.setAttribute("height", "160");
+  const div1 = document.createElementNS("http://www.w3.org/1999/xhtml", "div");
+  div1.innerHTML = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis mollis mi ut ultricies. Nullam magna ipsum, porta vel dui convallis, rutrum imperdiet eros. Aliquam erat volutpat."
+  svg1.appendChild(poly1);
+  svg1.appendChild(circle1);
+  svg1.appendChild(foreign1);
+  foreign1.appendChild(div1);
 
   this.svgDialog_.appendChild(svg1);
 
