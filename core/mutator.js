@@ -192,15 +192,20 @@ Blockly.Mutator.prototype.createEditor_ = function() {
   }
 
   const svg1 = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svg1.setAttribute("width", "100");
-  svg1.setAttribute("height", "100");
+  svg1.setAttribute("viewBox", "0 0 100 100");
+  const rect1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+  rect1.setAttribute("x", "0");
+  rect1.setAttribute("y", "0");
+  rect1.setAttribute("width", "100%");
+  rect1.setAttribute("height", "100%");
+  svg1.appendChild(rect1);
   const cir1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-  cir1.setAttribute("cx", "80");
-  cir1.setAttribute("cy", "80");
-  cir1.setAttribute("r", "30");
+  cir1.setAttribute("cx", "50%");
+  cir1.setAttribute("cy", "50%");
+  cir1.setAttribute("r", "4");
   cir1.setAttribute("fill", "red");
   svg1.appendChild(cir1);
-  
+
   this.svgDialog_.appendChild(svg1);
 
   return this.svgDialog_;
