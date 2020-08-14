@@ -205,6 +205,8 @@ Blockly.Mutator.prototype.createEditor_ = function() {
   foreign1.setAttribute("width", "160");
   foreign1.setAttribute("height", "160");
   const div1 = document.createElementNS("http://www.w3.org/1999/xhtml", "div");
+  div1.setAttribute("id", "latinDIV");
+  div1.setAttribute("overflow", "scroll");
   div1.innerHTML = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis mollis mi ut ultricies. Nullam magna ipsum, porta vel dui convallis, rutrum imperdiet eros. Aliquam erat volutpat."
   svg1.appendChild(poly1);
   svg1.appendChild(circle1);
